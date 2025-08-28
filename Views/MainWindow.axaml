@@ -1,0 +1,231 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        x:Class="InstagramDMSender.Avalonia.MainWindow"
+        Title="인스타그램 다이렉트메세지 자동화"
+        Width="1400"
+        Height="930"
+        Background="#2a2a2a"
+        CanResize="True"
+        WindowStartupLocation="CenterScreen">
+  
+  <Window.Styles>
+    <Style Selector="Button">
+      <Setter Property="Background" Value="#404040"/>
+      <Setter Property="Foreground" Value="White"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="BorderBrush" Value="#606060"/>
+      <Setter Property="Padding" Value="12,6"/>
+      <Setter Property="CornerRadius" Value="4"/>
+      <Setter Property="FontWeight" Value="Medium"/>
+      <Setter Property="Cursor" Value="Hand"/>
+    </Style>
+    
+    <Style Selector="Button:hover">
+      <Setter Property="Background" Value="#505050"/>
+    </Style>
+    
+    <Style Selector="Button:pointerover">
+      <Setter Property="Background" Value="#505050"/>
+    </Style>
+    
+    <Style Selector="Button.primary">
+      <Setter Property="Background" Value="#FFD700"/>
+      <Setter Property="Foreground" Value="Black"/>
+      <Setter Property="BorderBrush" Value="#FFD700"/>
+    </Style>
+    
+    <Style Selector="Button.primary:hover">
+      <Setter Property="Background" Value="#FFED4E"/>
+    </Style>
+    
+    <Style Selector="Button.danger">
+      <Setter Property="Background" Value="#dc3545"/>
+      <Setter Property="BorderBrush" Value="#dc3545"/>
+    </Style>
+    
+    <Style Selector="Button.danger:hover">
+      <Setter Property="Background" Value="#c82333"/>
+    </Style>
+    
+    <Style Selector="TextBox">
+      <Setter Property="Background" Value="#1a1a1a"/>
+      <Setter Property="Foreground" Value="White"/>
+      <Setter Property="BorderBrush" Value="#606060"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="CornerRadius" Value="3"/>
+      <Setter Property="Padding" Value="8,6"/>
+    </Style>
+    
+    <Style Selector="ComboBox">
+      <Setter Property="Background" Value="#1a1a1a"/>
+      <Setter Property="Foreground" Value="White"/>
+      <Setter Property="BorderBrush" Value="#606060"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="CornerRadius" Value="3"/>
+      <Setter Property="Padding" Value="8,6"/>
+    </Style>
+    
+    <Style Selector="CheckBox">
+      <Setter Property="Foreground" Value="White"/>
+    </Style>
+    
+    <Style Selector="TextBlock">
+      <Setter Property="Foreground" Value="White"/>
+    </Style>
+    
+    <Style Selector="Border.panel">
+      <Setter Property="Background" Value="#1a1a1a"/>
+      <Setter Property="BorderBrush" Value="#606060"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="CornerRadius" Value="6"/>
+      <Setter Property="Padding" Value="16"/>
+    </Style>
+  </Window.Styles>
+
+  <Grid RowDefinitions="Auto,*,Auto" ColumnDefinitions="*" Margin="16">
+    
+    <!-- Header -->
+    <Border Grid.Row="0" Background="#1a1a1a" CornerRadius="8" Padding="16" Margin="0,0,0,16">
+      <Grid ColumnDefinitions="Auto,*,Auto" VerticalAlignment="Center">
+        <StackPanel Orientation="Horizontal" Spacing="8">
+          <TextBlock Text="📱" FontSize="24"/>
+          <TextBlock Text="InstaDMSender Ver. 1.0.4" FontSize="18" FontWeight="Bold" VerticalAlignment="Center"/>
+        </StackPanel>
+        <TextBlock Grid.Column="1" Text="Instagram DM 자동화 도구" FontSize="16" HorizontalAlignment="Center" Foreground="#FFD700"/>
+        <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8">
+          <Button x:Name="StartBrowserButton" Content="🌐 브라우저 시작" Classes="primary" MinWidth="100"/>
+          <Button x:Name="StartSendingButton" Content="▶️ 전송 시작" Classes="primary" MinWidth="100"/>
+          <Button x:Name="StopButton" Content="⏹️ 중지" Classes="danger" MinWidth="80"/>
+        </StackPanel>
+      </Grid>
+    </Border>
+
+    <!-- 3-Panel Main -->
+    <Grid Grid.Row="1" ColumnDefinitions="1.2*,1.2*" ColumnSpacing="16">
+      
+      
+
+      <!-- Center Column: Message -->
+      <StackPanel Grid.Column="0" Orientation="Vertical" Spacing="16">
+        <Border Classes="panel">
+          <StackPanel Orientation="Vertical" Spacing="8">
+            <Grid ColumnDefinitions="*,Auto" VerticalAlignment="Center">
+              <TextBlock Text="보내실 DM 작성" FontSize="14" FontWeight="Bold"/>
+              <Button Grid.Column="1" Content="보내실 다이렉트메세지 작성하기" Classes="primary"/>
+            </Grid>
+            <TextBox x:Name="MessageTemplate" Height="160" AcceptsReturn="True" TextWrapping="Wrap"
+                     Watermark="메시지 템플릿을 입력하세요. {Username}으로 사용자명을 삽입할 수 있습니다."/>
+          </StackPanel>
+        </Border>
+
+        <!-- Filters Panel -->
+        <Border Classes="panel">
+          <StackPanel Orientation="Vertical" Spacing="8">
+            <TextBlock Text="🔍 필터 설정" FontSize="14" FontWeight="Medium"/>
+            <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto" RowDefinitions="Auto,Auto,Auto,Auto,Auto" ColumnSpacing="8" RowSpacing="8">
+              <!-- Row 0: switch + privacy -->
+              <CheckBox x:Name="UseFiltersCheck" Grid.Row="0" Grid.Column="0" Content="필터 사용" IsChecked="True"/>
+              <TextBlock Grid.Row="0" Grid.Column="3" Text="공개범위:" VerticalAlignment="Center" FontWeight="Medium"/>
+              <ComboBox x:Name="PrivacyCombo" Grid.Row="0" Grid.Column="4" Width="120" SelectedIndex="0">
+                <ComboBoxItem Content="모든"/>
+                <ComboBoxItem Content="공개만"/>
+                <ComboBoxItem Content="비공개만"/>
+              </ComboBox>
+
+              <!-- Row 1: interval -->
+              <TextBlock Grid.Row="1" Grid.Column="0" Text="인터벌:" VerticalAlignment="Center" FontWeight="Medium"/>
+              <TextBox x:Name="IntervalMin" Grid.Row="1" Grid.Column="1" Width="80" Text="3"/>
+              <TextBlock Grid.Row="1" Grid.Column="2" Text="~" VerticalAlignment="Center"/>
+              <TextBox x:Name="IntervalMax" Grid.Row="1" Grid.Column="3" Width="80" Text="5"/>
+              <TextBlock Grid.Row="1" Grid.Column="4" Text="분" VerticalAlignment="Center"/>
+
+              <!-- Row 2: pause -->
+              <TextBlock Grid.Row="2" Grid.Column="0" Text="휴식:" VerticalAlignment="Center" FontWeight="Medium"/>
+              <TextBox x:Name="PauseUsers" Grid.Row="2" Grid.Column="1" Width="80" Text="20"/>
+              <TextBlock Grid.Row="2" Grid.Column="2" Text="명마다" VerticalAlignment="Center"/>
+              <TextBox x:Name="PauseDuration" Grid.Row="2" Grid.Column="3" Width="80" Text="20"/>
+              <TextBlock Grid.Row="2" Grid.Column="4" Text="분" VerticalAlignment="Center"/>
+
+              <!-- Row 3: max + posts -->
+              <TextBlock Grid.Row="3" Grid.Column="0" Text="최대:" VerticalAlignment="Center" FontWeight="Medium"/>
+              <TextBox x:Name="MaxUsers" Grid.Row="3" Grid.Column="1" Width="100" Text="100"/>
+              <TextBlock Grid.Row="3" Grid.Column="2" Text="명" VerticalAlignment="Center"/>
+              <TextBlock Grid.Row="3" Grid.Column="3" Text="게시물:" VerticalAlignment="Center" FontWeight="Medium"/>
+              <TextBox x:Name="PostsMin" Grid.Row="3" Grid.Column="4" Width="80" Text="1"/>
+              <TextBlock Grid.Row="3" Grid.Column="5" Text="~" VerticalAlignment="Center"/>
+              <TextBox x:Name="PostsMax" Grid.Row="3" Grid.Column="6" Width="100" Text="100000"/>
+
+              <!-- Row 4: followers -->
+              <TextBlock Grid.Row="4" Grid.Column="0" Text="팔로워:" VerticalAlignment="Center" FontWeight="Medium"/>
+              <TextBox x:Name="FollowersMin" Grid.Row="4" Grid.Column="1" Width="80" Text="0"/>
+              <TextBlock Grid.Row="4" Grid.Column="2" Text="~" VerticalAlignment="Center"/>
+              <TextBox x:Name="FollowersMax" Grid.Row="4" Grid.Column="3" Width="120" Text="10000000"/>
+            </Grid>
+          </StackPanel>
+        </Border>
+      </StackPanel>
+
+      <!-- Right Column: Accounts & Controls -->
+      <StackPanel Grid.Column="1" Orientation="Vertical" Spacing="16">
+        <!-- Login Panel moved here -->
+        <Border Classes="panel">
+          <StackPanel Orientation="Vertical" Spacing="8">
+            <TextBlock Text="🔐 계정 정보" FontWeight="Bold"/>
+            <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto" ColumnSpacing="8" RowSpacing="8">
+              <TextBlock Text="아이디" VerticalAlignment="Center"/>
+              <TextBox Grid.Column="1" x:Name="LoginUsername" Watermark="Instagram 아이디"/>
+              <TextBlock Grid.Row="1" Text="비밀번호" VerticalAlignment="Center"/>
+              <TextBox Grid.Row="1" Grid.Column="1" x:Name="LoginPassword" PasswordChar="●" Watermark="비밀번호"/>
+            </Grid>
+          </StackPanel>
+        </Border>
+        <Border Classes="panel">
+          <StackPanel Orientation="Vertical" Spacing="8">
+            <Grid ColumnDefinitions="Auto" VerticalAlignment="Center">
+              <TextBlock Text="아이디 등록 및 작업설정" FontWeight="Bold"/>
+            </Grid>
+            <!-- User add row -->
+            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
+              <TextBox x:Name="UsernameEntry" Watermark="사용자명 (쉼표 또는 줄바꿈으로 구분)" AcceptsReturn="True"/>
+              <Button Grid.Column="1" x:Name="AddButton" Content="추가" Classes="primary" MinWidth="80"/>
+              <Button Grid.Column="2" x:Name="DeleteSelectedButton" Content="선택삭제" MinWidth="90"/>
+            </Grid>
+            <Border Background="#0f0f0f" CornerRadius="4" Height="220">
+              <ScrollViewer>
+                <StackPanel x:Name="UsersPanel" Spacing="6" Margin="8"/>
+              </ScrollViewer>
+            </Border>
+            <StackPanel Orientation="Horizontal" Spacing="8">
+              <Button Content="선택시작" Classes="primary" MinWidth="90"/>
+              <Button Content="작업정지" MinWidth="90"/>
+              <Button Content="선택삭제" MinWidth="90"/>
+            </StackPanel>
+          </StackPanel>
+        </Border>
+      </StackPanel>
+    </Grid>
+
+    <!-- Bottom: Status + Log -->
+    <Border Grid.Row="2" Classes="panel">
+      <StackPanel Orientation="Vertical" Spacing="12">
+        <Grid ColumnDefinitions="Auto,*" VerticalAlignment="Center">
+          <StackPanel Orientation="Horizontal" Spacing="20">
+            <TextBlock x:Name="StatusLabel" Text="🟢 상태: 준비됨" FontWeight="Medium"/>
+            <TextBlock x:Name="CurrentUserLabel" Text="👤 현재 사용자: -" FontWeight="Medium"/>
+          </StackPanel>
+          <ProgressBar Grid.Column="1" x:Name="ProgressBar" Height="14" Minimum="0" Maximum="100" Background="#0f0f0f" Foreground="#FFD700" CornerRadius="7"/>
+        </Grid>
+        <Border Background="#0f0f0f" CornerRadius="6" Height="240">
+          <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+            <TextBox x:Name="LogText" AcceptsReturn="True" Background="Transparent" BorderThickness="0"/>
+          </ScrollViewer>
+        </Border>
+      </StackPanel>
+    </Border>
+  </Grid>
+</Window>
+
+
