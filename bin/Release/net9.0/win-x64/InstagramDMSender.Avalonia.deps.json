@@ -15,6 +15,7 @@
           "Avalonia.Fonts.Inter": "11.3.3",
           "Avalonia.Themes.Fluent": "11.3.3",
           "MessageBox.Avalonia": "3.2.0",
+          "Microsoft.NET.ILLink.Tasks": "9.0.8",
           "Selenium.Support": "4.24.0",
           "Selenium.WebDriver": "4.24.0",
           "SeleniumExtras.WaitHelpers": "1.0.2",
@@ -997,6 +998,7 @@
           }
         }
       },
+      "Microsoft.NET.ILLink.Tasks/9.0.8": {},
       "Selenium.Support/4.24.0": {
         "dependencies": {
           "Selenium.WebDriver": "4.24.0"
@@ -1238,6 +1240,13 @@
       "sha512": "sha512-MEnrZ3UIiH40hjzMDsxrTyi8dtqB5ziv3iBeeU4bXsL/7NLSal9F1lZKpK+tfBRnUoDSdtcW3KufE4yhATOMCA==",
       "path": "microcom.runtime/0.11.0",
       "hashPath": "microcom.runtime.0.11.0.nupkg.sha512"
+    },
+    "Microsoft.NET.ILLink.Tasks/9.0.8": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-rd1CbIsMtVPtZNTIVD6Xydue//klYOOQIDpRgu3BHtv17AlpRs74/6QFbcYgMm/jL+naVU2T3OFLxVSLV5lQLQ==",
+      "path": "microsoft.net.illink.tasks/9.0.8",
+      "hashPath": "microsoft.net.illink.tasks.9.0.8.nupkg.sha512"
     },
     "Selenium.Support/4.24.0": {
       "type": "package",

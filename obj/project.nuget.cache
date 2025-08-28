@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "NvDXOL4jHmE=",
+  "dgSpecHash": "nspkwmx2y+c=",
   "success": true,
   "projectFilePath": "/Users/hankim/Desktop/자동화/InstagramDMSender.Avalonia/InstagramDMSender.Avalonia.csproj",
   "expectedPackageFiles": [
@@ -27,6 +27,7 @@
     "/Users/hankim/.nuget/packages/harfbuzzsharp.nativeassets.win32/8.3.1.1/harfbuzzsharp.nativeassets.win32.8.3.1.1.nupkg.sha512",
     "/Users/hankim/.nuget/packages/messagebox.avalonia/3.2.0/messagebox.avalonia.3.2.0.nupkg.sha512",
     "/Users/hankim/.nuget/packages/microcom.runtime/0.11.0/microcom.runtime.0.11.0.nupkg.sha512",
+    "/Users/hankim/.nuget/packages/microsoft.net.illink.tasks/9.0.8/microsoft.net.illink.tasks.9.0.8.nupkg.sha512",
     "/Users/hankim/.nuget/packages/selenium.support/4.24.0/selenium.support.4.24.0.nupkg.sha512",
     "/Users/hankim/.nuget/packages/selenium.webdriver/4.24.0/selenium.webdriver.4.24.0.nupkg.sha512",
     "/Users/hankim/.nuget/packages/seleniumextras.waithelpers/1.0.2/seleniumextras.waithelpers.1.0.2.nupkg.sha512",
@@ -36,7 +37,10 @@
     "/Users/hankim/.nuget/packages/skiasharp.nativeassets.webassembly/2.88.9/skiasharp.nativeassets.webassembly.2.88.9.nupkg.sha512",
     "/Users/hankim/.nuget/packages/skiasharp.nativeassets.win32/2.88.9/skiasharp.nativeassets.win32.2.88.9.nupkg.sha512",
     "/Users/hankim/.nuget/packages/system.io.pipelines/8.0.0/system.io.pipelines.8.0.0.nupkg.sha512",
-    "/Users/hankim/.nuget/packages/tmds.dbus.protocol/0.21.2/tmds.dbus.protocol.0.21.2.nupkg.sha512"
+    "/Users/hankim/.nuget/packages/tmds.dbus.protocol/0.21.2/tmds.dbus.protocol.0.21.2.nupkg.sha512",
+    "/Users/hankim/.nuget/packages/microsoft.netcore.app.runtime.win-x64/9.0.8/microsoft.netcore.app.runtime.win-x64.9.0.8.nupkg.sha512",
+    "/Users/hankim/.nuget/packages/microsoft.aspnetcore.app.runtime.win-x64/9.0.8/microsoft.aspnetcore.app.runtime.win-x64.9.0.8.nupkg.sha512",
+    "/Users/hankim/.nuget/packages/microsoft.netcore.app.host.win-x64/9.0.8/microsoft.netcore.app.host.win-x64.9.0.8.nupkg.sha512"
   ],
   "logs": []
 }
