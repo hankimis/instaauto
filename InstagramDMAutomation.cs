@@ -169,14 +169,51 @@ public class InstagramDMAutomation
                     {
                         optionBtn.Click();
                         Thread.Sleep(TimeSpan.FromMilliseconds(RandomMs(800, 1200)));
+                        // Scope to the dialog for safer selection
                         try
                         {
-                            var dropdownMsg = new WebDriverWait(new SystemClock(), _driver, TimeSpan.FromSeconds(7), TimeSpan.FromMilliseconds(200))
-                                .Until(ExpectedConditions.ElementToBeClickable(By.XPath("//button[contains(text(), '메시지 보내기') or contains(text(),'Message')]")));
-                            if (dropdownMsg != null) 
+                            var dialog = new WebDriverWait(new SystemClock(), _driver, TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(200))
+                                .Until(ExpectedConditions.ElementExists(By.XPath("//div[@role='dialog']")));
+
+                            var modalMsgXPaths = new[]
                             {
-                                messageButton = dropdownMsg;
-                                Thread.Sleep(TimeSpan.FromMilliseconds(RandomMs(300, 600)));
+                                "//div[@role='dialog']//button[normalize-space()='메시지 보내기' or normalize-space()='Message']",
+                                "//div[@role='dialog']//button[contains(normalize-space(), '메시지') or contains(normalize-space(),'Message')]",
+                                "//div[@role='dialog']//*[self::button or self::div or self::a][contains(normalize-space(),'메시지 보내기') or contains(normalize-space(),'Message')]"
+                            };
+
+                            foreach (var mx in modalMsgXPaths)
+                            {
+                                try
+                                {
+                                    var btn = new WebDriverWait(new SystemClock(), _driver, TimeSpan.FromSeconds(8), TimeSpan.FromMilliseconds(200))
+                                        .Until(ExpectedConditions.ElementToBeClickable(By.XPath(mx)));
+                                    if (btn != null)
+                                    {
+                                        try { ((IJavaScriptExecutor)_driver).ExecuteScript("arguments[0].scrollIntoView({block:'center', inline:'center'});", btn); } catch { }
+                                        messageButton = btn;
+                                        Thread.Sleep(TimeSpan.FromMilliseconds(RandomMs(300, 600)));
+                                        break;
+                                    }
+                                }
+                                catch { }
+                            }
+
+                            // Fallback: if not found within dialog, try global search once more
+                            if (messageButton is null)
+                            {
+                                try
+                                {
+                                    var dropdownMsg = new WebDriverWait(new SystemClock(), _driver, TimeSpan.FromSeconds(6), TimeSpan.FromMilliseconds(200))
+                                        .Until(ExpectedConditions.ElementToBeClickable(By.XPath("//button[contains(normalize-space(),'메시지 보내기') or contains(normalize-space(),'Message')]")));
+                                    if (dropdownMsg != null)
+                                    {
+                                        try { ((IJavaScriptExecutor)_driver).ExecuteScript("arguments[0].scrollIntoView({block:'center', inline:'center'});", dropdownMsg); } catch { }
+                                        messageButton = dropdownMsg;
+                                        Thread.Sleep(TimeSpan.FromMilliseconds(RandomMs(300, 600)));
+                                    }
+                                }
+                                catch { }
                             }
                         }
                         catch { }

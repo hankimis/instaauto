@@ -76,3 +76,4 @@
 /Users/hankim/Desktop/자동화/InstagramDMSender.Avalonia/obj/Release/net9.0/InstagramDMSender.Avalonia.pdb
 /Users/hankim/Desktop/자동화/InstagramDMSender.Avalonia/obj/Release/net9.0/InstagramDMSender.Avalonia.genruntimeconfig.cache
 /Users/hankim/Desktop/자동화/InstagramDMSender.Avalonia/obj/Release/net9.0/ref/InstagramDMSender.Avalonia.dll
+/Users/hankim/Desktop/자동화/InstagramDMSender.Avalonia/obj/Release/net9.0/InstagramDMSender.Avalonia.sourcelink.json
