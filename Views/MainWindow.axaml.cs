@@ -31,6 +31,7 @@ public partial class MainWindow : Window
     {
         AddButton.Click += OnAddClicked;
         DeleteSelectedButton.Click += OnDeleteSelectedClicked;
+        DeleteAllButton.Click += OnDeleteAllClicked;
         StartBrowserButton.Click += OnStartBrowser;
         StartSendingButton.Click += OnStartSending;
         StopButton.Click += OnStop;
@@ -333,6 +334,13 @@ public partial class MainWindow : Window
     {
         _users.RemoveAll(x => x.Selected);
         RefreshUsersUI();
+    }
+
+    private async void OnDeleteAllClicked(object? sender, RoutedEventArgs e)
+    {
+        _users.Clear();
+        RefreshUsersUI();
+        await ShowInfo("성공", "전체 사용자가 삭제되었습니다.");
     }
 
     private bool CheckFilters(AccountInfo info, int postsMin, int postsMax, int followersMin, int followersMax, int privacyIndex)

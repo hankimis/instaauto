@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("InstagramDMSender.Avalonia")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e1c417a8e583ff1f0bfb953c479121a66805f415")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+00e686da90c762b710aa886026ca40bddd0208c7")]
 [assembly: System.Reflection.AssemblyProductAttribute("InstagramDMSender.Avalonia")]
 [assembly: System.Reflection.AssemblyTitleAttribute("InstagramDMSender.Avalonia")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

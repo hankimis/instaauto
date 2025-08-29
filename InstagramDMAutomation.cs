@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
+using OpenQA.Selenium.Interactions;
 using SeleniumExtras.WaitHelpers;
 
 namespace InstagramDMSender.Avalonia;
@@ -153,33 +154,35 @@ public class InstagramDMAutomation
                         "//div[@role='button' and .//svg[@aria-label='옵션' or @aria-label='Options']]",
                         "//button[.//svg[@aria-label='옵션' or @aria-label='Options']]",
                         "//div[contains(@class,'x1i10hfl') and contains(@class,'x972fbf') and @role='button' and .//svg[@aria-label='옵션' or @aria-label='Options']]",
-                        "//div[contains(@class,'x1q0g3np')]//div[@role='button' and .//svg[@aria-label='옵션' or @aria-label='Options']]"
+                        "//div[contains(@class,'x1q0g3np')]//div[@role='button' and .//svg[@aria-label='옵션' or @aria-label='Options']]",
+                        // 역할 속성이 없는 케이스까지 포괄
+                        "//*[self::div or self::span or self::button][.//svg[@aria-label='옵션' or @aria-label='Options']]",
+                        "//svg[@aria-label='옵션' or @aria-label='Options']/ancestor::*[self::div or self::button][1]"
                     };
                     foreach (var xp in optionButtonXPaths)
                     {
                         try
                         {
-                            optionBtn = new WebDriverWait(new SystemClock(), _driver, TimeSpan.FromSeconds(5), TimeSpan.FromMilliseconds(200))
-                                .Until(ExpectedConditions.ElementToBeClickable(By.XPath(xp)));
+                            optionBtn = new WebDriverWait(new SystemClock(), _driver, TimeSpan.FromSeconds(8), TimeSpan.FromMilliseconds(200))
+                                .Until(ExpectedConditions.ElementExists(By.XPath(xp)));
                             if (optionBtn != null) break;
                         }
                         catch { }
                     }
                     if (optionBtn != null)
                     {
-                        optionBtn.Click();
+                        SafeClick(optionBtn);
                         Thread.Sleep(TimeSpan.FromMilliseconds(RandomMs(800, 1200)));
                         // Scope to the dialog for safer selection
                         try
                         {
-                            var dialog = new WebDriverWait(new SystemClock(), _driver, TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(200))
-                                .Until(ExpectedConditions.ElementExists(By.XPath("//div[@role='dialog']")));
+                            var dialog = WaitForVisibleDialog(TimeSpan.FromSeconds(10));
 
                             var modalMsgXPaths = new[]
                             {
-                                "//div[@role='dialog']//button[normalize-space()='메시지 보내기' or normalize-space()='Message']",
-                                "//div[@role='dialog']//button[contains(normalize-space(), '메시지') or contains(normalize-space(),'Message')]",
-                                "//div[@role='dialog']//*[self::button or self::div or self::a][contains(normalize-space(),'메시지 보내기') or contains(normalize-space(),'Message')]"
+                                ".//button[normalize-space()='메시지 보내기' or normalize-space()='Message']",
+                                ".//button[contains(normalize-space(), '메시지') or contains(normalize-space(),'Message')]",
+                                ".//*[self::button or self::div or self::a][contains(normalize-space(),'메시지 보내기') or contains(normalize-space(),'Message')]"
                             };
 
                             foreach (var mx in modalMsgXPaths)
@@ -187,7 +190,9 @@ public class InstagramDMAutomation
                                 try
                                 {
                                     var btn = new WebDriverWait(new SystemClock(), _driver, TimeSpan.FromSeconds(8), TimeSpan.FromMilliseconds(200))
-                                        .Until(ExpectedConditions.ElementToBeClickable(By.XPath(mx)));
+                                        .Until(d => {
+                                            try { return dialog?.FindElement(By.XPath(mx)); } catch { return null; }
+                                        });
                                     if (btn != null)
                                     {
                                         try { ((IJavaScriptExecutor)_driver).ExecuteScript("arguments[0].scrollIntoView({block:'center', inline:'center'});", btn); } catch { }
@@ -205,7 +210,7 @@ public class InstagramDMAutomation
                                 try
                                 {
                                     var dropdownMsg = new WebDriverWait(new SystemClock(), _driver, TimeSpan.FromSeconds(6), TimeSpan.FromMilliseconds(200))
-                                        .Until(ExpectedConditions.ElementToBeClickable(By.XPath("//button[contains(normalize-space(),'메시지 보내기') or contains(normalize-space(),'Message')]")));
+                                        .Until(ExpectedConditions.ElementExists(By.XPath("//button[contains(normalize-space(),'메시지 보내기') or contains(normalize-space(),'Message')]")));
                                     if (dropdownMsg != null)
                                     {
                                         try { ((IJavaScriptExecutor)_driver).ExecuteScript("arguments[0].scrollIntoView({block:'center', inline:'center'});", dropdownMsg); } catch { }
@@ -290,7 +295,7 @@ public class InstagramDMAutomation
 
             try
             {
-                sendBtn.Click();
+                SafeClick(sendBtn);
                 Thread.Sleep(TimeSpan.FromSeconds(RandomSec(2, 3.5)));
                 return true;
             }
@@ -435,4 +440,52 @@ public class InstagramDMAutomation
 
     private static int RandomMs(int min, int max) => new Random().Next(min, max + 1);
     private static double RandomSec(double min, double max) => min + new Random().NextDouble() * (max - min);
+
+    private void SafeClick(IWebElement element)
+    {
+        try
+        {
+            element.Click();
+            return;
+        }
+        catch { }
+        try
+        {
+            new Actions(_driver).MoveToElement(element).Pause(TimeSpan.FromMilliseconds(100)).Click().Perform();
+            return;
+        }
+        catch { }
+        try
+        {
+            ((IJavaScriptExecutor)_driver).ExecuteScript("arguments[0].click();", element);
+        }
+        catch { }
+    }
+
+    private IWebElement? WaitForVisibleDialog(TimeSpan timeout)
+    {
+        try
+        {
+            var end = DateTime.UtcNow + timeout;
+            IWebElement? lastVisible = null;
+            while (DateTime.UtcNow < end)
+            {
+                var dialogs = _driver.FindElements(By.XPath("//div[@role='dialog']"));
+                foreach (var d in dialogs)
+                {
+                    try
+                    {
+                        var rect = ((IJavaScriptExecutor)_driver).ExecuteScript("var r=arguments[0].getBoundingClientRect();return {w:r.width,h:r.height,disp:getComputedStyle(arguments[0]).display,vis:getComputedStyle(arguments[0]).visibility,op:getComputedStyle(arguments[0]).opacity};", d) as IDictionary<string, object>;
+                        if (rect != null && Convert.ToDouble(rect["w"]) > 0 && Convert.ToDouble(rect["h"]) > 0)
+                            lastVisible = d;
+                    }
+                    catch { }
+                }
+                if (lastVisible != null) return lastVisible;
+                Thread.Sleep(100);
+            }
+            return lastVisible;
+        }
+        catch { return null; }
+    }
 }

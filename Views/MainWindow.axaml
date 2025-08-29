@@ -188,10 +188,11 @@
               <TextBlock Text="아이디 등록 및 작업설정" FontWeight="Bold"/>
             </Grid>
             <!-- User add row -->
-            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
-              <TextBox x:Name="UsernameEntry" Watermark="사용자명 (쉼표 또는 줄바꿈으로 구분)" AcceptsReturn="True"/>
+            <Grid ColumnDefinitions="*,Auto,Auto,Auto" ColumnSpacing="8">
+              <TextBox x:Name="UsernameEntry" Watermark="사용자명 (쉼표 또는 줄바꿈으로 구분)" AcceptsReturn="True" ScrollViewer.VerticalScrollBarVisibility="Auto" Height="220"/>
               <Button Grid.Column="1" x:Name="AddButton" Content="추가" Classes="primary" MinWidth="80"/>
               <Button Grid.Column="2" x:Name="DeleteSelectedButton" Content="선택삭제" MinWidth="90"/>
+              <Button Grid.Column="3" x:Name="DeleteAllButton" Content="전체삭제" MinWidth="90"/>
             </Grid>
             <Border Background="#0f0f0f" CornerRadius="4" Height="220">
               <ScrollViewer>
